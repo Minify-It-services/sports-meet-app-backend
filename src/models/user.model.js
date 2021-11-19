@@ -23,26 +23,36 @@ const userSchema = mongoose.Schema(
         }
       },
     },
-    password: {
+    year: {
       type: String,
       required: true,
       trim: true,
-      minlength: 8,
-      validate(value) {
-        if (!value.match(/\d/) || !value.match(/[a-zA-Z]/)) {
-          throw new Error('Password must contain at least one letter and one number');
-        }
-      },
-      private: true, // used by the toJSON plugin
     },
-    role: {
+    semester: {
       type: String,
-      enum: roles,
-      default: 'user',
+      required: true,
+      trim: true,
     },
-    isEmailVerified: {
-      type: Boolean,
-      default: false,
+    faculty: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    games: {
+      type: [{
+        teamId: mongoose.ObjectId,
+        sportId: mongoose.ObjectId,
+      }],
+      default: [],
+    },
+    contactNumber: {
+      type: String,
+      default: "",
+    },
+    imageUrl: {
+      type: String,
+      required: true,
+      trim: true,
     },
   },
   {
