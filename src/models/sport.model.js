@@ -41,8 +41,8 @@ const sportSchema = mongoose.Schema(
 sportSchema.plugin(toJSON);
 sportSchema.plugin(paginate);
 
-sportSchema.statics.isSportCreated = async function(name){
-    const sport = await this.findOne({name})
+sportSchema.statics.isSportCreated = async function(name, excludeSportId){
+    const sport = await this.findOne({name, _id: {$ne: excludeSportId}})
     return !!sport
 }
 
