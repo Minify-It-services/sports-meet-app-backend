@@ -32,9 +32,7 @@ const updateUser = {
   }),
   body: Joi.object()
     .keys({
-      email: Joi.string().email(),
-      password: Joi.string().custom(password),
-      name: Joi.string(),
+      contactNumber: Joi.string().required().max(10).min(10).pattern(/^[0-9+]+$/),
     })
     .min(1),
 };
