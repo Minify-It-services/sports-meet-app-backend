@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
 const { toJSON, paginate } = require('./plugins');
-const { roles } = require('../config/roles');
+const { roles, gameRoles } = require('../config/roles');
 
 const userSchema = mongoose.Schema(
   {
@@ -40,8 +40,21 @@ const userSchema = mongoose.Schema(
     },
     games: {
       type: [{
-        teamId: mongoose.ObjectId,
-        sportId: mongoose.ObjectId,
+        teamId: {
+          type: mongoose.SchemaTypes.ObjectId,
+          required: true,
+          ref: 'Team',
+        },
+        sportId: {
+          type: mongoose.SchemaTypes.ObjectId,
+          required: true,
+          ref: 'Sport',
+        },
+        role: {
+          type: String,
+          enum: gameRoles,
+          default: 'player',
+        },
       }],
       default: [],
     },
@@ -53,6 +66,11 @@ const userSchema = mongoose.Schema(
       type: String,
       required: true,
       trim: true,
+    },
+    role: {
+      type: String,
+      enum: roles,
+      default: 'user',
     },
   },
   {
