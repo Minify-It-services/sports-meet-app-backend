@@ -2,6 +2,7 @@ const express = require('express');
 const authRoute = require('./auth.route');
 const userRoute = require('./user.route');
 const sportRoute = require('./sport.route');
+const noticeRoute = require('./notice.route')
 const docsRoute = require('./docs.route');
 const config = require('../../config/config');
 
@@ -20,6 +21,10 @@ const defaultRoutes = [
     path: '/sports',
     route: sportRoute,
   },
+  {
+    path: '/notices',
+    route: noticeRoute,
+  }
 ];
 
 const devRoutes = [
