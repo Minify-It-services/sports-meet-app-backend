@@ -22,6 +22,14 @@ const sportSchema = mongoose.Schema(
         type: Number,
         required: true,
     },
+    playerLimit: {
+      type: Number,
+      required: true,
+    },
+    extraLimit: {
+      type: Number,
+      required: true,
+    },
     rules: {
         type: [String],
         required: true,
@@ -31,6 +39,45 @@ const sportSchema = mongoose.Schema(
       required: true,
       trim: true,
     },
+    coordinator: {
+      type: {
+        id: {
+          type: mongoose.SchemaTypes.ObjectId,
+          ref: 'User',
+        },
+        name: {
+          type: String,
+          required: true,
+        },
+      },
+      required: true,
+    },
+    viceCoordinator: {
+      type: {
+        id: {
+          type: mongoose.SchemaTypes.ObjectId,
+          ref: 'User',
+        },
+        name: {
+          type: String,
+          required: true,
+        },
+      },
+      required: true,
+    },
+    referees: {
+      type: [{
+        id: {
+          type: mongoose.SchemaTypes.ObjectId,
+          ref: 'User',
+        },
+        name: {
+          type: String,
+          required: true,
+        },
+      }],
+      required: true,
+    }
   },
   {
     timestamps: true,

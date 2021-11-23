@@ -1,5 +1,5 @@
 const Joi = require('joi');
-const { objectId } = require('./custom.validation');
+const { objectId, userObject } = require('./custom.validation');
 
 const createSport = {
   body: Joi.object().keys({
@@ -7,8 +7,13 @@ const createSport = {
     type: Joi.string().valid('single','duo','team').required(),
     limit: Joi.number().required(),
     classLimit: Joi.number().required(),
+    playerLimit: Joi.number().required(),
+    extraLimit: Joi.number().required(),
     imageUrl: Joi.string().required(),
     rules: Joi.array().required(),
+    coordinator: Joi.required().custom(userObject),
+    viceCoordinator: Joi.required().custom(userObject),
+    referees: Joi.array().required(), 
   }),
 };
 
@@ -30,6 +35,11 @@ const updateSport = {
         classLimit: Joi.number(),
         imageUrl: Joi.string(),
         rules: Joi.array(),
+        playerLimit: Joi.number(),
+        extraLimit: Joi.number(),
+        coordinator: Joi.custom(userObject),
+        viceCoordinator: Joi.custom(userObject),
+        referees: Joi.array(), 
     })
 };
 
