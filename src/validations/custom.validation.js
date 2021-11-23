@@ -15,7 +15,18 @@ const password = (value, helpers) => {
   return value;
 };
 
+const userObject = (value, helpers) => {
+  if(!value.id || !value.id.match(/^[0-9a-fA-F]{24}$/)){
+    return helpers.message('Proper Id is required')
+  }
+  if(!value.name || value.name === ""){
+    return helpers.message('Proper name is required')
+  }
+  return value;
+}
+
 module.exports = {
   objectId,
   password,
+  userObject,
 };
