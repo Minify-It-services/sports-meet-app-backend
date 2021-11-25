@@ -110,6 +110,30 @@ userSchema.pre('save', async function (next) {
   next();
 });
 
+userSchema.methods.getMinimumDetail = async function() {
+  return {
+    id: this._id,
+    name: this.name,
+    contactNumber: this.contactNumber,
+  }
+}
+
+userSchema.methods.updateAddTeams = async function(teamId, teamName, sportName, role) {
+  this.teams = [
+    ...this.teams,
+    {
+      teamId,
+      sport: sportName,
+      teamName,
+      role,
+    }
+  ];
+}
+
+userSchema.methods.updateRemoveTeams = async function(teamId) {
+  this.teams = this.teams.filter(team => Object.is(team.teamId, teamId));
+}
+
 /**
  * @typedef User
  */
