@@ -12,7 +12,7 @@ router
 
 router
   .route('/:userId')
-  .get(auth(['getUsers', 'getUser']), validate(userValidation.getUser), userController.getUser)
+  .get(auth('getUser'), validate(userValidation.getUser), userController.getUser)
   .patch(auth('manageUser'), validate(userValidation.updateUser), userController.updateUser)
   .delete(auth('manageUsers'), validate(userValidation.deleteUser), userController.deleteUser);
 
