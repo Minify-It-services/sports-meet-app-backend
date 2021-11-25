@@ -2,6 +2,8 @@ const allRoles = {
   user: ['getUser', 'manageUser'],
   admin: [
     'getUsers', 
+    'getUser',
+    'manageUser',
     'manageUsers', 
     'getUser', 
     'manageUser', 
@@ -17,7 +19,7 @@ const allGameRoles = {
   player: ['leaveTeam'],
   captain: ['leaveTeam'],
   coach: ['leaveTeam', 'manageTeam'],
-  manager: ['leaveTeam', 'manageTeam'],
+  manager: ['leaveTeam', 'manageTeam', 'removeTeam'],
 }
 
 const roles = Object.keys(allRoles);
