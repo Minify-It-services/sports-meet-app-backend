@@ -38,17 +38,16 @@ const userSchema = mongoose.Schema(
       required: true,
       trim: true,
     },
-    games: {
+    teams: {
       type: [{
         teamId: {
           type: mongoose.SchemaTypes.ObjectId,
-          required: true,
-          ref: 'Team',
         },
-        sportId: {
-          type: mongoose.SchemaTypes.ObjectId,
-          required: true,
-          ref: 'Sport',
+        teamName: {
+          type: String,
+        },
+        sport: {
+          type: String,
         },
         role: {
           type: String,
