@@ -1,37 +1,38 @@
 const express = require('express');
 const auth = require('../../middlewares/auth');
 const validate = require('../../middlewares/validate');
-const userValidation = require('../../validations/user.validation');
-const userController = require('../../controllers/user.controller');
+const teamValidation = require('../../validations/team.validation');
+const teamController = require('../../controllers/team.controller');
 
 const router = express.Router();
 
 router
   .route('/')
-  .get(auth('getUsers'), validate(userValidation.getUsers), userController.getUsers);
+  .post(auth(), validate(teamValidation.createTeam), teamController.createTeam)
+  .get(teamController.getTeams);
 
 router
-  .route('/:userId')
-  .get(auth('getUser'), validate(userValidation.getUser), userController.getUser)
-  .patch(auth('manageUser'), validate(userValidation.updateUser), userController.updateUser)
-  .delete(auth('manageUsers'), validate(userValidation.deleteUser), userController.deleteUser);
+  .route('/:teamId')
+  .get(validate(teamValidation.singleTeam), teamController.getTeam)
+  .patch(auth('manageTeam'), validate(teamValidation.updateTeam), teamController.updateTeam)
+  .delete(auth(), validate(teamValidation.singleTeam), teamController.deleteTeam);
 
 module.exports = router;
 
 /**
  * @swagger
  * tags:
- *   name: Users
- *   description: User management and retrieval
+ *   name: teams
+ *   description: team management and retrieval
  */
 
 /**
  * @swagger
- * /users:
+ * /teams:
  *   post:
- *     summary: Create a user
- *     description: Only admins can create other users.
- *     tags: [Users]
+ *     summary: Create a team
+ *     description: Only admins can create other teams.
+ *     tags: [teams]
  *     security:
  *       - bearerAuth: []
  *     requestBody:
@@ -59,19 +60,19 @@ module.exports = router;
  *                 description: At least one number and one letter
  *               role:
  *                  type: string
- *                  enum: [user, admin]
+ *                  enum: [team, admin]
  *             example:
  *               name: fake name
  *               email: fake@example.com
  *               password: password1
- *               role: user
+ *               role: team
  *     responses:
  *       "201":
  *         description: Created
  *         content:
  *           application/json:
  *             schema:
- *                $ref: '#/components/schemas/User'
+ *                $ref: '#/components/schemas/team'
  *       "400":
  *         $ref: '#/components/responses/DuplicateEmail'
  *       "401":
@@ -80,9 +81,9 @@ module.exports = router;
  *         $ref: '#/components/responses/Forbidden'
  *
  *   get:
- *     summary: Get all users
- *     description: Only admins can retrieve all users.
- *     tags: [Users]
+ *     summary: Get all teams
+ *     description: Only admins can retrieve all teams.
+ *     tags: [teams]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -90,12 +91,12 @@ module.exports = router;
  *         name: name
  *         schema:
  *           type: string
- *         description: User name
+ *         description: team name
  *       - in: query
  *         name: role
  *         schema:
  *           type: string
- *         description: User role
+ *         description: team role
  *       - in: query
  *         name: sortBy
  *         schema:
@@ -107,7 +108,7 @@ module.exports = router;
  *           type: integer
  *           minimum: 1
  *         default: 10
- *         description: Maximum number of users
+ *         description: Maximum number of teams
  *       - in: query
  *         name: page
  *         schema:
@@ -126,7 +127,7 @@ module.exports = router;
  *                 results:
  *                   type: array
  *                   items:
- *                     $ref: '#/components/schemas/User'
+ *                     $ref: '#/components/schemas/team'
  *                 page:
  *                   type: integer
  *                   example: 1
@@ -147,11 +148,11 @@ module.exports = router;
 
 /**
  * @swagger
- * /users/{id}:
+ * /teams/{id}:
  *   get:
- *     summary: Get a user
- *     description: Logged in users can fetch only their own user information. Only admins can fetch other users.
- *     tags: [Users]
+ *     summary: Get a team
+ *     description: Logged in teams can fetch only their own team information. Only admins can fetch other teams.
+ *     tags: [teams]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -160,14 +161,14 @@ module.exports = router;
  *         required: true
  *         schema:
  *           type: string
- *         description: User id
+ *         description: team id
  *     responses:
  *       "200":
  *         description: OK
  *         content:
  *           application/json:
  *             schema:
- *                $ref: '#/components/schemas/User'
+ *                $ref: '#/components/schemas/team'
  *       "401":
  *         $ref: '#/components/responses/Unauthorized'
  *       "403":
@@ -176,9 +177,9 @@ module.exports = router;
  *         $ref: '#/components/responses/NotFound'
  *
  *   patch:
- *     summary: Update a user
- *     description: Logged in users can only update their own information. Only admins can update other users.
- *     tags: [Users]
+ *     summary: Update a team
+ *     description: Logged in teams can only update their own information. Only admins can update other teams.
+ *     tags: [teams]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -187,7 +188,7 @@ module.exports = router;
  *         required: true
  *         schema:
  *           type: string
- *         description: User id
+ *         description: team id
  *     requestBody:
  *       required: true
  *       content:
@@ -216,7 +217,7 @@ module.exports = router;
  *         content:
  *           application/json:
  *             schema:
- *                $ref: '#/components/schemas/User'
+ *                $ref: '#/components/schemas/team'
  *       "400":
  *         $ref: '#/components/responses/DuplicateEmail'
  *       "401":
@@ -227,9 +228,9 @@ module.exports = router;
  *         $ref: '#/components/responses/NotFound'
  *
  *   delete:
- *     summary: Delete a user
- *     description: Logged in users can delete only themselves. Only admins can delete other users.
- *     tags: [Users]
+ *     summary: Delete a team
+ *     description: Logged in teams can delete only themselves. Only admins can delete other teams.
+ *     tags: [teams]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -238,7 +239,7 @@ module.exports = router;
  *         required: true
  *         schema:
  *           type: string
- *         description: User id
+ *         description: team id
  *     responses:
  *       "200":
  *         description: No content
