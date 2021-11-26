@@ -10,6 +10,7 @@ const register = {
     semester: Joi.string().required(),
     faculty: Joi.string().required(),
     imageUrl: Joi.string().required(),
+    role: Joi.string().valid('user', 'admin'),
   }),
 };
 
