@@ -5,6 +5,7 @@ const sportRoute = require('./sport.route');
 const noticeRoute = require('./notice.route');
 const matchRoute = require('./match.route');
 const teamRoute = require('./team.route')
+const adminRoute = require('./admin.route')
 const docsRoute = require('./docs.route');
 const config = require('../../config/config');
 
@@ -34,6 +35,10 @@ const defaultRoutes = [
   {
     path: '/teams',
     route: teamRoute,
+  },
+  {
+    path: '/admin',
+    route: adminRoute,
   }
 ];
 
