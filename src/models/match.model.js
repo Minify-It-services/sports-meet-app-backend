@@ -46,6 +46,11 @@ const matchSchema = mongoose.Schema(
             },
         }
      },
+     status:{
+        type: String,
+        enum: ['done', 'upcomming', 'today'],
+        default: 'upcomming',
+     },
      sport: {
          type: String,
      },

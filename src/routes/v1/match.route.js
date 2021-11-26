@@ -8,12 +8,12 @@ const router = express.Router();
 
 router
   .route('/')
-  .post(validate(matchValidation.createMatch), matchController.createMatch)
+  .post(auth('manageMatch'), validate(matchValidation.createMatch), matchController.createMatch)
   .get( matchController.getMatches);
 router
   .route('/:matchId')
   .get(validate(matchValidation.getMatch), matchController.getMatch)
   .patch(auth('manageMatch'), validate(matchValidation.updateMatch), matchController.updateMatch)
-  .delete(auth('manageMatches'), validate(matchValidation.deleteMatch), matchController.deleteMatch);
+  .delete(auth('manageMatch'), validate(matchValidation.deleteMatch), matchController.deleteMatch);
 
 module.exports = router;
