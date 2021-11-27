@@ -9,12 +9,12 @@ const router = express.Router();
 router
   .route('/')
   .post(auth(), validate(teamValidation.createTeam), teamController.createTeam)
-  .get(teamController.getTeams);
+  .get(auth(), teamController.getTeams);
 
 router
   .route('/:teamId')
-  .get(validate(teamValidation.singleTeam), teamController.getTeam)
+  .get(auth(), validate(teamValidation.singleTeam), teamController.getTeam)
   .patch(auth('manageTeam'), validate(teamValidation.updateTeam), teamController.updateTeam)
-  .delete(auth(), validate(teamValidation.singleTeam), teamController.deleteTeam);
+  .delete(auth('removeTeam'), validate(teamValidation.singleTeam), teamController.deleteTeam);
 
 module.exports = router;
