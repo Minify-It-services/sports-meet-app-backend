@@ -11,7 +11,7 @@ const createSport = catchAsync(async (req, res) => {
 
 const getSports = catchAsync(async (req, res) => {
   const result = await sportService.getSports();
-  res.send(result);
+  res.send(jsend(result));
 });
 
 const getSport = catchAsync(async (req, res) => {
