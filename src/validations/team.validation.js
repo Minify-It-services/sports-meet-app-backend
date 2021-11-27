@@ -28,8 +28,8 @@ const updateTeam = {
   body: Joi.object()
     .keys({
         name: Joi.string(),
-        coach: Joi.custom(objectId),
-        captain: Joi.custom(objectId),
+        coach: Joi.custom(objectId).optional(),
+        captain: Joi.custom(objectId).optional(),
         memberIds: Joi.array().required(),
     })
 };

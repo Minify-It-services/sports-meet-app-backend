@@ -36,7 +36,6 @@ const teamSchema = mongoose.Schema(
             id: {
                 type: mongoose.SchemaTypes.ObjectId,
                 required: true,
-                ref: 'User',
             },
             name: {
                 type: String,
@@ -54,7 +53,6 @@ const teamSchema = mongoose.Schema(
             id: {
                 type: mongoose.SchemaTypes.ObjectId,
                 required: true,
-                ref: 'User',
             },
             name: {
                 type: String,
@@ -72,7 +70,6 @@ const teamSchema = mongoose.Schema(
             id: {
                 type: mongoose.SchemaTypes.ObjectId,
                 required: true,
-                ref: 'User',
             },
             name: {
                 type: String,

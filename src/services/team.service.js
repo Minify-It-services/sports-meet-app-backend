@@ -48,6 +48,24 @@ const getTeamById = async (id) => {
   return Team.findById(id);
 };
 
+const updatePlayers = async (team, newTeam) => {
+  for(let i = 0; i < team.memberIds.length; i++){
+    if(!newTeam.memberIds.includes(team.memberIds[i])){
+      const oldMember = await getUser(team.memberIds[i])
+      await oldMember.updateRemoveTeams(team._id)
+      await oldMember.save()
+    }
+  }
+  
+  for(let i = 0; i < newTeam.memberIds.length; i++){
+    if(!team.memberIds.includes(newTeam.memberIds[i])){
+      const newMember = await getUser(newTeam.memberIds[i])
+      await newMember.updateAddTeams(team._id, team.name, team.sport, 'player')
+      await newMember.save()
+    }
+  }
+}
+
 /**
  * Update team by id
  * @param {ObjectId} teamId
@@ -59,34 +77,34 @@ const updateTeamById = async (teamId, updateBody) => {
   if (!team) {
     throw new ApiError(httpStatus.NOT_FOUND, 'team not found');
   }
-//   if (updateBody.name && (await team.isteamCreated(updateBody.name, teamId))) {
-//     throw new ApiError(httpStatus.BAD_REQUEST, `${updateBody.name} is already Taken`);
-//   }
-  if(updateBody.captain){
-    const Captain = await getUser(updateBody.captain)
-    updateBody.captain = await Captain.getMinimumDetail()
-    const OldCaptain = await getUser(team.captain.id)
-    await OldCaptain.updateRemoveTeams(team._id)
+
+if(updateBody.captain ){
+  const Captain = await getUser(updateBody.captain)
+  updateBody.captain = await Captain.getMinimumDetail()
+  await Captain.updateAddTeams(team._id, team.name, team.sport, 'captain')
+  await Captain.save()
+  const OldCaptain = await getUser(team.captain.id)
+  await OldCaptain.updateRemoveTeams(team._id)
     await OldCaptain.save()
   }
-  if(updateBody.coach){
+  if(updateBody.coach ){
     const Coach = await getUser(updateBody.coach)
     updateBody.coach = await Coach.getMinimumDetail()
+    await Coach.updateAddTeams(team._id, team.name, team.sport, 'coach')
+    await Coach.save()
     const OldCoach = await getUser(team.coach.id)
     await OldCoach.updateRemoveTeams(team._id)
     await OldCoach.save()
   }
+  await updatePlayers(team, updateBody)
   Object.assign(team, updateBody);
   await team.save();
   return team;
 };
 
 const removeMembers = async (team) => {
-    // logger.info('removing members')
     const manager = await getUser(team.manager.id)
-    // logger.info(manager)
     await manager.updateRemoveTeams(team._id)
-    logger.info(manager)
     await manager.save()
 
     const coach = await getUser(team.coach.id)
@@ -115,7 +133,7 @@ const deleteTeamById = async (teamId) => {
     throw new ApiError(httpStatus.NOT_FOUND, 'Team not found');
   }
   await removeMembers(team)
-//   await team.remove();
+  await team.remove();
   return team;
 };
 
