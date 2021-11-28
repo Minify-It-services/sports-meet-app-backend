@@ -46,7 +46,6 @@ const teamSchema = mongoose.Schema(
                 required: true,
             },
         },
-        required: true,
     },
     manager: {
         type: {
@@ -63,7 +62,6 @@ const teamSchema = mongoose.Schema(
                 required: true,
             },
         },
-        required: true,
     },
     captain: {
         type: {
@@ -80,7 +78,6 @@ const teamSchema = mongoose.Schema(
                 required: true,
             },
         },
-        required: true,
     },
     memberIds: {
         type: [mongoose.SchemaTypes.ObjectId],

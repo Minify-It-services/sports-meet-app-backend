@@ -12,6 +12,15 @@ router
   .get(auth(), teamController.getTeams);
 
 router
+  .route('/check')
+  .get(auth(), teamController.checkTeam)
+
+router
+  .route('/leave/:teamId')
+  .delete(auth('leaveTeam'), validate(teamValidation.singleTeam), teamController.deleteTeam)
+  .patch(auth('leaveTeam'), teamController.updateTeam)
+
+router
   .route('/:teamId')
   .get(auth(), validate(teamValidation.singleTeam), teamController.getTeam)
   .patch(auth('manageTeam'), validate(teamValidation.updateTeam), teamController.updateTeam)

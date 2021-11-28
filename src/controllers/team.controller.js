@@ -1,25 +1,30 @@
 const httpStatus = require('http-status');
 const ApiError = require('../utils/ApiError');
 const catchAsync = require('../utils/catchAsync');
-const { User } = require('../models');
+const { User, Team, Sport } = require('../models');
 const { teamService } = require('../services');
 const { jsend } = require('../utils/jsend');
+const logger = require('../config/logger')
 
 const getUser = async (id) => {
     return User.findById(id);
 }
 const addMembers = async (team) => {
-    const manager = await getUser(team.manager.id);
-    await manager.updateAddTeams(team._id, team.name, team.sport, 'manager')
-    await manager.save()
-
-    const coach = await getUser(team.coach.id);
-    await coach.updateAddTeams(team._id, team.name, team.sport, 'coach')
-    await coach.save()
-
-    const captain = await getUser(team.captain.id);
-    await captain.updateAddTeams(team._id, team.name, team.sport, 'captain')
-    await captain.save()
+    if(team.manager){
+      const manager = await getUser(team.manager.id);
+      await manager.updateAddTeams(team._id, team.name, team.sport, 'manager')
+      await manager.save()
+    }
+    if(team.coach){
+      const coach = await getUser(team.coach.id);
+      await coach.updateAddTeams(team._id, team.name, team.sport, 'coach')
+      await coach.save()
+    }
+    if(team.captain){
+      const captain = await getUser(team.captain.id);
+      await captain.updateAddTeams(team._id, team.name, team.sport, 'captain')
+      await captain.save()
+    }
 
     await team.memberIds.forEach(async (memberId) => {
         const player = await getUser(memberId);
@@ -54,8 +59,33 @@ const updateTeam = catchAsync(async (req, res) => {
 
 const deleteTeam = catchAsync(async (req, res) => {
   await teamService.deleteTeamById(req.params.teamId);
-  res.status(httpStatus.NO_CONTENT).send();
+  res.status(httpStatus.NO_CONTENT).send(jsend({ message: 'deleted' }));
 });
+
+const checkTeam = catchAsync(async (req, res) => {
+  const { sport, year, faculty, playerId } = req.query
+  const teams = await Team.find({ sport, year, faculty })
+  const game = await Sport.findOne({ name: sport })
+
+  let inGame = 0
+  let teamId = ''
+  for(let i = 0; i < teams.length; i++){
+    if(teams[i].memberIds.includes(playerId)){
+      teamId = teams[i]._id
+      inGame++
+    }
+  }
+  if(inGame > 0){
+    res.send(jsend({ message: 'Already in a team', teamId, teams }))
+    return
+  }
+  if(teams.length >= game.classLimit){
+    res.send(jsend({ message: 'Team full' }))
+    return
+  }
+
+  res.send(jsend({ message: 'Not in team and team empty' }))
+})
 
 module.exports = {
   createTeam,
@@ -63,4 +93,5 @@ module.exports = {
   getTeam,
   updateTeam,
   deleteTeam,
+  checkTeam,
 };

@@ -12,19 +12,30 @@ const getUser = async (id) => {
  * @returns {Promise<team>}
  */
 const createTeam = async (teamBody) => {
-//   if (await Team.isteamCreated(teamBody.name)) {
-//     throw new ApiError(httpStatus.BAD_REQUEST, `${teamBody.name} is already created.`);
-//   }
-    const { coach, manager, captain } = teamBody
-    const Coach = await getUser(coach)
-    const Manager = await getUser(manager)
-    const Captain = await getUser(captain)
+    let teamBodyToCreate = {
+      ...teamBody
+    }
 
-    const teamBodyToCreate = {
-        ...teamBody,
+    if(teamBody.coach){
+      const Coach = await getUser(teamBody.coach)
+      teamBodyToCreate = {
+        ...teamBodyToCreate,
         coach: await Coach.getMinimumDetail(),
+      }
+    }
+    if(teamBody.manager){
+      const Manager = await getUser(teamBody.manager)
+      teamBodyToCreate = {
+        ...teamBodyToCreate,
         manager: await Manager.getMinimumDetail(),
+      }
+    }
+    if(teamBody.captain){
+      const Captain = await getUser(teamBody.captain)
+      teamBodyToCreate = {
+        ...teamBodyToCreate,
         captain: await Captain.getMinimumDetail(),
+      }
     }
 
     return Team.create(teamBodyToCreate)
@@ -103,17 +114,21 @@ if(updateBody.captain ){
 };
 
 const removeMembers = async (team) => {
-    const manager = await getUser(team.manager.id)
-    await manager.updateRemoveTeams(team._id)
-    await manager.save()
-
-    const coach = await getUser(team.coach.id)
-    await coach.updateRemoveTeams(team._id)
-    await coach.save()
-
-    const captain = await getUser(team.captain.id)
-    await captain.updateRemoveTeams(team._id)
-    await captain.save()
+    if(team.manager){
+      const manager = await getUser(team.manager.id)
+      await manager.updateRemoveTeams(team._id)
+      await manager.save()
+    }
+    if(team.coach){
+      const coach = await getUser(team.coach.id)
+      await coach.updateRemoveTeams(team._id)
+      await coach.save()
+    }
+    if(team.captain){
+      const captain = await getUser(team.captain.id)
+      await captain.updateRemoveTeams(team._id)
+      await captain.save()
+    }
 
     await team.memberIds.forEach(async memberId => {
         const player = await getUser(memberId)
