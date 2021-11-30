@@ -1,6 +1,7 @@
 const httpStatus = require('http-status');
 const { User } = require('../models');
 const ApiError = require('../utils/ApiError');
+const logger = require('../config/logger')
 
 /**
  * Create a user
@@ -23,8 +24,9 @@ const createUser = async (userBody) => {
  * @param {number} [options.page] - Current page (default = 1)
  * @returns {Promise<QueryResult>}
  */
-const queryUsers = async (filter, options) => {
-  const users = await User.paginate(filter, options);
+const queryUsers = async (year, userId='') => {
+  const users = await User.find({year, _id:{$ne:userId}});
+  logger.info(users)
   return users;
 };
 
