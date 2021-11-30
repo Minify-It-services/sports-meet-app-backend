@@ -4,6 +4,9 @@ const ApiError = require('../utils/ApiError');
 const catchAsync = require('../utils/catchAsync');
 const { userService } = require('../services');
 const { jsend } = require('../utils/jsend');
+const { Sport, Team } = require('../models');
+const findGameMembers = require('../utils/findGameMembers');
+const logger = require('../config/logger')
 
 const createUser = catchAsync(async (req, res) => {
   const user = await userService.createUser(req.body);
@@ -11,9 +14,17 @@ const createUser = catchAsync(async (req, res) => {
 });
 
 const getUsers = catchAsync(async (req, res) => {
-  const {year, userId} = req.query;
+  const {year, userId, sport, faculty} = req.query;
   const options = pick(req.query, ['sortBy']);
-  const result = await userService.queryUsers(year, userId);
+
+  const teams = await Team.find({ sport, year, faculty })
+  const game = await Sport.findOne({ name: sport })
+
+  const { teamMembers } = await findGameMembers(teams, game, userId);
+
+  const excludeUserId = [ userId ].concat(teamMembers)
+
+  const result = await userService.queryUsers(year, excludeUserId);
   res.send(jsend(result));
 });
 
