@@ -18,6 +18,8 @@ const getUsers = {
     limit: Joi.number().integer(),
     page: Joi.number().integer(),
     userId: Joi.optional().custom(objectId),
+    faculty: Joi.string(),
+    sport: Joi.string(),
   }),
 };
 
