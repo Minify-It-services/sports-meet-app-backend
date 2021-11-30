@@ -22,9 +22,7 @@ const getUsers = catchAsync(async (req, res) => {
 
   const { teamMembers } = await findGameMembers(teams, game, userId);
 
-  const excludeUserId = [ userId ].concat(teamMembers)
-
-  const result = await userService.queryUsers(year, excludeUserId);
+  const result = await userService.queryUsers(year, teamMembers);
   res.send(jsend(result));
 });
 
