@@ -69,14 +69,27 @@ const checkTeam = catchAsync(async (req, res) => {
 
   let inGame = 0
   let teamId = ''
+  let teamMembers = []
   for(let i = 0; i < teams.length; i++){
     if(teams[i].memberIds.includes(playerId)){
       teamId = teams[i]._id
+      for(let j=0; j<teams[i].memberIds.length; j++){
+        if(game.type === 'duo'){
+          if(JSON.stringify(teams[i].memberIds[j]).replaceAll('"','') !== playerId){
+            const member = await getUser(teams[i].memberIds[j])
+            teamMembers.push(member)
+          }
+        }
+        else{
+          const member = await getUser(teams[i].memberIds[j])
+          teamMembers.push(member)
+        }
+      }
       inGame++
     }
   }
   if(inGame > 0){
-    res.send(jsend({ message: 'Already in a team', teamId, teams }))
+    res.send(jsend({ message: 'Already in a team', teamId, teamMembers }))
     return
   }
   if(game.classLimit!==-1 && teams.length >= game.classLimit){

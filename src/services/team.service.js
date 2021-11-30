@@ -129,12 +129,11 @@ const removeMembers = async (team) => {
       await captain.updateRemoveTeams(team._id)
       await captain.save()
     }
-
-    await team.memberIds.forEach(async memberId => {
-        const player = await getUser(memberId)
-        await player.updateRemoveTeams(team._id)
-        await player.save()
-    })
+    for(let i=0; i<team.memberIds.length; i++){
+      const player = await getUser(team.memberIds[i])
+      await player.updateRemoveTeams(team._id)
+      await player.save()
+    }
 }
 
 /**
