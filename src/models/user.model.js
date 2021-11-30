@@ -3,6 +3,7 @@ const validator = require('validator');
 const bcrypt = require('bcryptjs');
 const { toJSON, paginate } = require('./plugins');
 const { roles, gameRoles } = require('../config/roles');
+const logger = require('../config/logger')
 
 const userSchema = mongoose.Schema(
   {
@@ -131,7 +132,7 @@ userSchema.methods.updateAddTeams = async function(teamId, teamName, sportName, 
 }
 
 userSchema.methods.updateRemoveTeams = async function(teamId) {
-  this.teams = this.teams.filter(team => Object.is(team.teamId, teamId));
+  this.teams = this.teams.filter(team => JSON.stringify(team.teamId) !== JSON.stringify(teamId));
 }
 
 /**
