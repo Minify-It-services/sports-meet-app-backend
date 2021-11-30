@@ -4,6 +4,7 @@ const catchAsync = require('../utils/catchAsync');
 const { User, Team, Sport } = require('../models');
 const { teamService } = require('../services');
 const { jsend } = require('../utils/jsend');
+const findGameMembers = require('../utils/findGameMembers');
 const logger = require('../config/logger')
 
 const getUser = async (id) => {
@@ -67,27 +68,8 @@ const checkTeam = catchAsync(async (req, res) => {
   const teams = await Team.find({ sport, year, faculty })
   const game = await Sport.findOne({ name: sport })
 
-  let inGame = 0
-  let teamId = ''
-  let teamMembers = []
-  for(let i = 0; i < teams.length; i++){
-    if(teams[i].memberIds.includes(playerId)){
-      teamId = teams[i]._id
-      for(let j=0; j<teams[i].memberIds.length; j++){
-        if(game.type === 'duo'){
-          if(JSON.stringify(teams[i].memberIds[j]).replaceAll('"','') !== playerId){
-            const member = await getUser(teams[i].memberIds[j])
-            teamMembers.push(member)
-          }
-        }
-        else{
-          const member = await getUser(teams[i].memberIds[j])
-          teamMembers.push(member)
-        }
-      }
-      inGame++
-    }
-  }
+  const { inGame, teamMembers, teamId } = await findGameMembers(teams, game, playerId, true)
+  
   if(inGame > 0){
     res.send(jsend({ message: 'Already in a team', teamId, teamMembers }))
     return
