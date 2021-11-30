@@ -11,9 +11,9 @@ const createUser = catchAsync(async (req, res) => {
 });
 
 const getUsers = catchAsync(async (req, res) => {
-  const filter = pick(req.query, ['year']);
+  const {year, userId} = req.query;
   const options = pick(req.query, ['sortBy']);
-  const result = await userService.queryUsers(filter, options);
+  const result = await userService.queryUsers(year, userId);
   res.send(jsend(result));
 });
 
