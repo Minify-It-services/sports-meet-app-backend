@@ -40,36 +40,18 @@ const sportSchema = mongoose.Schema(
       trim: true,
     },
     coordinator: {
-      type: {
-        id: {
-          type: mongoose.SchemaTypes.ObjectId,
-          ref: 'User',
-        },
-        name: {
-          type: String,
-          required: true,
-        },
-      },
+      type: String,
       required: true,
     },
     viceCoordinator: {
-      type: {
-        id: {
-          type: mongoose.SchemaTypes.ObjectId,
-          ref: 'User',
-        },
-        name: {
-          type: String,
-          required: true,
-        },
-      },
+      type: String,
       required: true,
     },
     referees: {
       type: [{
-        id: {
-          type: mongoose.SchemaTypes.ObjectId,
-          ref: 'User',
+        year: {
+          type: String,
+          required: true,
         },
         name: {
           type: String,
