@@ -60,7 +60,7 @@ const updateTeam = catchAsync(async (req, res) => {
 
 const deleteTeam = catchAsync(async (req, res) => {
   await teamService.deleteTeamById(req.params.teamId);
-  res.status(httpStatus.NO_CONTENT).send(jsend({ message: 'deleted' }));
+  res.send(jsend({ message: 'deleted' }));
 });
 
 const checkTeam = catchAsync(async (req, res) => {

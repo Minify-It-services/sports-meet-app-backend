@@ -17,7 +17,7 @@ const createTeam = {
 
 const singleTeam = {
   params: Joi.object().keys({
-    teamId: Joi.string().custom(objectId),
+    teamId: Joi.required().custom(objectId),
   }),
 };
 
