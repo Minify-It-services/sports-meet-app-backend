@@ -20,9 +20,14 @@ const getUsers = catchAsync(async (req, res) => {
   const teams = await Team.find({ sport, year, faculty })
   const game = await Sport.findOne({ name: sport })
 
-  const { teamMembers } = await findGameMembers(teams, game, userId);
+  const { inGame, teamMembers } = await findGameMembers(teams, game, userId);
 
-  const result = await userService.queryUsers(year, teamMembers);
+  let excludeUserId = [userId];
+  if(inGame) {
+    excludeUserId = teamMembers
+  }
+
+  const result = await userService.queryUsers(year, excludeUserId);
   res.send(jsend(result));
 });
 
