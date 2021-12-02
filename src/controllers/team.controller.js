@@ -82,6 +82,20 @@ const checkTeam = catchAsync(async (req, res) => {
   res.send(jsend({ message: 'Not in team and team empty' }))
 })
 
+const createTeacherTeam = catchAsync(async (req, res) =>{
+  const {name, sport, memberIds } = req.body
+  const team = {
+    name,
+    memberIds,
+    sport,
+    year: '0',
+    semester: '0th',
+    faculty: 'staff',
+  }
+  const createdTeam = await Team.create(team)
+  res.status(httpStatus.CREATED).send(jsend(createdTeam))
+})
+
 module.exports = {
   createTeam,
   getTeams,
@@ -89,4 +103,5 @@ module.exports = {
   updateTeam,
   deleteTeam,
   checkTeam,
+  createTeacherTeam,
 };
