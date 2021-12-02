@@ -34,8 +34,17 @@ const updateTeam = {
     })
 };
 
+const teacherTeam = {
+  body: Joi.object().keys({
+    name: Joi.string().required(),
+    sport: Joi.string().required(),
+    memberIds: Joi.array().required(),
+  })
+}
+
 module.exports = {
   createTeam,
   singleTeam,
   updateTeam,
+  teacherTeam,
 };
