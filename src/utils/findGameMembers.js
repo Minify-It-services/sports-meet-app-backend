@@ -6,7 +6,7 @@ const findGameMembers = async (teams, game, playerId, alreadyTeam=false) => {
     let teamMembers = []
 
     for(let i = 0; i < teams.length; i++){
-        if(teams[i].memberIds.includes(playerId)){
+        if(teams[i].memberIds.includes(playerId) || !alreadyTeam){
             teamId = teams[i]._id
             for(let j=0; j<teams[i].memberIds.length; j++){
                 if(game.type === 'duo' && alreadyTeam){

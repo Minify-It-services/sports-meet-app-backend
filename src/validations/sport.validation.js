@@ -10,9 +10,10 @@ const createSport = {
     playerLimit: Joi.number().required(),
     extraLimit: Joi.number().required(),
     imageUrl: Joi.string().required(),
+    bgImageUrl: Joi.string().required(),
     rules: Joi.array().required(),
-    coordinator: Joi.required().custom(userObject),
-    viceCoordinator: Joi.required().custom(userObject),
+    coordinator: Joi.string().required(),
+    viceCoordinator: Joi.string().required(),
     referees: Joi.array().required(), 
   }),
 };
@@ -34,11 +35,12 @@ const updateSport = {
         limit: Joi.number(),
         classLimit: Joi.number(),
         imageUrl: Joi.string(),
+        bgImageUrl: Joi.string(),
         rules: Joi.array(),
         playerLimit: Joi.number(),
         extraLimit: Joi.number(),
-        coordinator: Joi.custom(userObject),
-        viceCoordinator: Joi.custom(userObject),
+        coordinator: Joi.string(),
+        viceCoordinator: Joi.string(),
         referees: Joi.array(), 
     })
 };
