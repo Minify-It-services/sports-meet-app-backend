@@ -5,7 +5,7 @@ const catchAsync = require('../utils/catchAsync');
 const { userService } = require('../services');
 const { jsend } = require('../utils/jsend');
 const { Sport, Team } = require('../models');
-const findGameMembers = require('../utils/findGameMembers');
+const { findGameMembers } = require('../utils/findGameMembers');
 const logger = require('../config/logger')
 
 const createUser = catchAsync(async (req, res) => {

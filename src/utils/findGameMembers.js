@@ -1,12 +1,14 @@
 const { User } = require('../models')
 
-const findGameMembers = async (teams, game, playerId, alreadyTeam=false) => {
+module.exports.findGameMembers = async (teams, game, playerId, alreadyTeam=false) => {
     let inGame = 0
     let teamId = ''
     let teamMembers = []
 
     for(let i = 0; i < teams.length; i++){
-        if(teams[i].memberIds.includes(playerId) || !alreadyTeam){
+        console.log( teams[i].manager.id,  playerId)
+        if(teams[i].memberIds.includes(playerId) || !alreadyTeam || JSON.stringify(teams[i].manager.id).replace('"','') === playerId || teams[i].coach === playerId){
+           console.log('here')
             teamId = teams[i]._id
             for(let j=0; j<teams[i].memberIds.length; j++){
                 if(game.type === 'duo' && alreadyTeam){
@@ -29,5 +31,3 @@ const findGameMembers = async (teams, game, playerId, alreadyTeam=false) => {
 
     return { inGame, teamMembers, teamId }
 }
-
-module.exports = findGameMembers

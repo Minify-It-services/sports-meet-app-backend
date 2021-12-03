@@ -4,7 +4,7 @@ const catchAsync = require('../utils/catchAsync');
 const { User, Team, Sport } = require('../models');
 const { teamService } = require('../services');
 const { jsend } = require('../utils/jsend');
-const findGameMembers = require('../utils/findGameMembers');
+const {findGameMembers} = require('../utils/findGameMembers');
 const logger = require('../config/logger')
 
 const getUser = async (id) => {
@@ -69,7 +69,7 @@ const checkTeam = catchAsync(async (req, res) => {
   const game = await Sport.findOne({ name: sport })
 
   const { inGame, teamMembers, teamId } = await findGameMembers(teams, game, playerId, true)
-  
+  console.log(inGame)
   if(inGame > 0){
     res.send(jsend({ message: 'Already in a team', teamId, teamMembers }))
     return

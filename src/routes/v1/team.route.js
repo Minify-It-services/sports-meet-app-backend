@@ -16,6 +16,10 @@ router
   .get(auth(), teamController.checkTeam)
 
 router
+  .route('/teachers')
+  .post(auth('manageUsers'), validate(teamValidation.teacherTeam), teamController.createTeacherTeam)
+
+router
   .route('/leave/:teamId')
   .delete(auth('leaveTeam'), validate(teamValidation.singleTeam), teamController.deleteTeam)
   .patch(auth('leaveTeam'), teamController.updateTeam)
