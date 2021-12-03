@@ -22,7 +22,11 @@ const getUsers = catchAsync(async (req, res) => {
 
   const { inGame, teamMembers } = await findGameMembers(teams, game, userId);
 
-  const excludeUserId = [userId];
+  const excludeUserId = [];
+
+  if(game.type === 'duo'){
+    excludeUserId.push(userId)
+  }
   if(inGame) {
     teamMembers.forEach(teamMember=>excludeUserId.push(teamMember))
   }
