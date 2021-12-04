@@ -24,11 +24,13 @@ const getUsers = catchAsync(async (req, res) => {
 
   const excludeUserId = [];
 
-  if(game.type === 'duo'){
-    excludeUserId.push(userId)
-  }
-  if(inGame) {
-    teamMembers.forEach(teamMember=>excludeUserId.push(teamMember))
+  if(game){
+    if(game.type === 'duo'){
+      excludeUserId.push(userId)
+    }
+    if(inGame) {
+      teamMembers.forEach(teamMember=>excludeUserId.push(teamMember))
+    }
   }
 
   const result = await userService.queryUsers(year, excludeUserId);

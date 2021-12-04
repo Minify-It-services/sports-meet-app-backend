@@ -4,7 +4,7 @@ const catchAsync = require('../utils/catchAsync');
 const { User, Team, Sport } = require('../models');
 const { teamService } = require('../services');
 const { jsend } = require('../utils/jsend');
-const {findGameMembers} = require('../utils/findGameMembers');
+const { findGameMembers, findGameMembersTeam } = require('../utils/findGameMembers');
 const logger = require('../config/logger')
 
 const getUser = async (id) => {
@@ -68,10 +68,27 @@ const checkTeam = catchAsync(async (req, res) => {
   const teams = await Team.find({ sport, year, faculty })
   const game = await Sport.findOne({ name: sport })
 
-  const { inGame, teamMembers, teamId } = await findGameMembers(teams, game, playerId, true)
-  console.log(inGame)
+  let members = {}
+  let role = 'player'
+
+  if(game.type!=='team')
+    members = await findGameMembers(teams, game, playerId, true)
+  else
+    members = await findGameMembersTeam(teams, playerId, true)
+
+  const { inGame, teamMembers, teamId, manager, coach, captain } = members
+
+  if(manager && manager.id === playerId)
+    role = 'manager'
+
+  if(captain && captain.id === playerId)
+    role = 'captain'
+
+  if(coach && coach.id === playerId)
+    role = 'coach'
+
   if(inGame > 0){
-    res.send(jsend({ message: 'Already in a team', teamId, teamMembers }))
+    res.send(jsend({ message: 'Already in a team', teamId, teamMembers, manager, captain, coach, role }))
     return
   }
   if(game.classLimit!==-1 && teams.length >= game.classLimit){
