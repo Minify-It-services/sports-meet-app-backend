@@ -5,7 +5,7 @@ const catchAsync = require('../utils/catchAsync');
 const { userService } = require('../services');
 const { jsend } = require('../utils/jsend');
 const { Sport, Team } = require('../models');
-const { findGameMembers } = require('../utils/findGameMembers');
+const { findGameMembers, findGameMembersTeam } = require('../utils/findGameMembers');
 const logger = require('../config/logger')
 
 const createUser = catchAsync(async (req, res) => {
@@ -20,15 +20,21 @@ const getUsers = catchAsync(async (req, res) => {
   const teams = await Team.find({ sport, year, faculty })
   const game = await Sport.findOne({ name: sport })
 
-  const { inGame, teamMembers } = await findGameMembers(teams, game, userId);
+  let members = {}
+  if(game.type!=='team')
+    members = await findGameMembers(teams, game, userId);
+  else
+    members = await findGameMembersTeam(teams, userId)
 
+  const { inGame, teamMembers, role } = members
+  
   const excludeUserId = [];
 
   if(game){
     if(game.type === 'duo'){
       excludeUserId.push(userId)
     }
-    if(inGame) {
+    if(inGame && (role || game.type === 'duo') && role !== 'manager') {
       teamMembers.forEach(teamMember=>excludeUserId.push(teamMember))
     }
   }
