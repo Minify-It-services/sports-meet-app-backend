@@ -20,17 +20,16 @@ const getUsers = catchAsync(async (req, res) => {
   const teams = await Team.find({ sport, year, faculty })
   const game = await Sport.findOne({ name: sport })
 
-  let members = {}
-  if(game.type!=='team')
-    members = await findGameMembers(teams, game, userId);
-  else
-    members = await findGameMembersTeam(teams, userId)
-
-  const { inGame, teamMembers, role } = members
-  
   const excludeUserId = [];
-
+  let members = {}
   if(game){
+    if(game.type!=='team')
+      members = await findGameMembers(teams, game, userId);
+    else
+      members = await findGameMembersTeam(teams, userId)
+
+    const { inGame, teamMembers, role } = members
+
     if(game.type === 'duo'){
       excludeUserId.push(userId)
     }
