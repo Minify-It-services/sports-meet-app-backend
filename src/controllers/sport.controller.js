@@ -15,7 +15,15 @@ const getSports = catchAsync(async (req, res) => {
 });
 
 const getSport = catchAsync(async (req, res) => {
-  const sport = await sportService.getSportById(req.params.sportId);
+  const { sportId, sportName } = req.params;
+
+  let sport = null;
+
+  if(sportId)
+    sport = await sportService.getSportById(sportId);
+  if(sportName)
+    sport = await sportService.getSportByName(sportName)
+
   if (!sport) {
     throw new ApiError(httpStatus.NOT_FOUND, 'sport not found');
   }
