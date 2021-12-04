@@ -14,7 +14,7 @@ const createUser = catchAsync(async (req, res) => {
 });
 
 const getUsers = catchAsync(async (req, res) => {
-  const {year, userId, sport, faculty} = req.query;
+  const {year, userId, sport, faculty, gender} = req.query;
   const options = pick(req.query, ['sortBy']);
 
   const teams = await Team.find({ sport, year, faculty })
@@ -33,7 +33,7 @@ const getUsers = catchAsync(async (req, res) => {
     }
   }
 
-  const result = await userService.queryUsers(year, excludeUserId);
+  const result = await userService.queryUsers(year, gender, excludeUserId);
   res.send(jsend(result));
 });
 

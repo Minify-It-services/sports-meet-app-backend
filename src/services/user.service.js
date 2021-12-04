@@ -24,13 +24,13 @@ const createUser = async (userBody) => {
  * @param {number} [options.page] - Current page (default = 1)
  * @returns {Promise<QueryResult>}
  */
-const queryUsers = async (year, excludeUserId) => {
+const queryUsers = async (year, gender = 'male', excludeUserId) => {
   let users = []
   if(year === undefined){
     users = await User.find({year: {$ne: '0'}})
   }
   else{
-    users = await User.find({ year, _id: {$nin: excludeUserId } });
+    users = await User.find({ year, gender, _id: {$nin: excludeUserId } });
   }
   // logger.info(users)
   return users;

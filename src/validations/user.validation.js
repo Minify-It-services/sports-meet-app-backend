@@ -14,6 +14,7 @@ const getUsers = {
   query: Joi.object().keys({
     name: Joi.string(),
     year: Joi.string(),
+    gender: Joi.string(),
     sortBy: Joi.string(),
     limit: Joi.number().integer(),
     page: Joi.number().integer(),
@@ -36,8 +37,8 @@ const updateUser = {
   body: Joi.object()
     .keys({
       contactNumber: Joi.string().required().max(10).min(10).pattern(/^[0-9+]+$/),
-    })
-    .min(1),
+      gender: Joi.string().required().valid('male', 'female'),
+    }),
 };
 
 const deleteUser = {
