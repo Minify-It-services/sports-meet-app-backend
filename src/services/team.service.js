@@ -71,7 +71,7 @@ const updatePlayers = async (team, newTeam) => {
   for(let i = 0; i < newTeam.memberIds.length; i++){
     if(!team.memberIds.includes(newTeam.memberIds[i])){
       const newMember = await getUser(newTeam.memberIds[i])
-      await newMember.updateAddTeams(team._id, team.name, team.sport, 'player')
+      await newMember.updateAddTeams(team._id, team.name, team.sport.name, team.sport.gameType, 'player')
       await newMember.save()
     }
   }
@@ -89,24 +89,27 @@ const updateTeamById = async (teamId, updateBody) => {
     throw new ApiError(httpStatus.NOT_FOUND, 'team not found');
   }
 
-if(updateBody.captain ){
-  const Captain = await getUser(updateBody.captain)
-  updateBody.captain = await Captain.getMinimumDetail()
-  await Captain.updateAddTeams(team._id, team.name, team.sport, 'captain')
-  await Captain.save()
-  const OldCaptain = await getUser(team.captain.id)
-  await OldCaptain.updateRemoveTeams(team._id)
-    await OldCaptain.save()
+  if(updateBody.captain){
+    const Captain = await getUser(updateBody.captain)
+    updateBody.captain = await Captain.getMinimumDetail()
+    await Captain.updateAddTeams(team._id, team.name, team.sport.name, team.sport.gameType, 'captain')
+    await Captain.save()
   }
   if(updateBody.coach ){
     const Coach = await getUser(updateBody.coach)
     updateBody.coach = await Coach.getMinimumDetail()
-    await Coach.updateAddTeams(team._id, team.name, team.sport, 'coach')
+    await Coach.updateAddTeams(team._id, team.name, team.sport.name, team.sport.gameType, 'coach')
     await Coach.save()
-    const OldCoach = await getUser(team.coach.id)
-    await OldCoach.updateRemoveTeams(team._id)
-    await OldCoach.save()
   }
+
+  const OldCaptain = await getUser(team.captain.id)
+  await OldCaptain.updateRemoveTeams(team._id)
+  await OldCaptain.save()
+
+  const OldCoach = await getUser(team.coach.id)
+  await OldCoach.updateRemoveTeams(team._id)
+  await OldCoach.save()
+
   await updatePlayers(team, updateBody)
   Object.assign(team, updateBody);
   await team.save();
