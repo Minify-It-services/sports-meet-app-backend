@@ -9,7 +9,7 @@ const router = express.Router();
 router
   .route('/')
   .post(auth(), validate(teamValidation.createTeam), teamController.createTeam)
-  .get(auth(), teamController.getTeams);
+  .get(auth(), validate(teamValidation.getTeams), teamController.getTeams);
 
 router
   .route('/check')
