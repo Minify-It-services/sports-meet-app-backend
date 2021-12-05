@@ -41,9 +41,9 @@ module.exports.findGameMembersTeam = async (teams, playerId, alreadyTeam=false) 
     for(let i = 0; i < teams.length; i++){
         if(teams[i].memberIds.includes(playerId) 
             || !alreadyTeam 
-            || JSON.stringify(teams[i].manager.id).replaceAll('"','') === playerId 
-            || JSON.stringify(teams[i].coach.id).replaceAll('"', '') === playerId
-            || JSON.stringify(teams[i].captain.id).replaceAll('"','') === playerId    
+            || JSON.stringify(teams[i].manager.id).replace(/"/g,'') === playerId 
+            || JSON.stringify(teams[i].coach.id).replace(/"/g, '') === playerId
+            || JSON.stringify(teams[i].captain.id).replace(/"/g,'') === playerId    
         ){
             teamId = teams[i]._id
             manager = await User.findById(teams[i].manager.id)

@@ -14,7 +14,7 @@ const verifyCallback = (req, resolve, reject, requiredRights) => async (err, use
     let userRights;
 
     if(req.params.teamId){
-      const gameIndex = user.teams.findIndex(team => JSON.stringify(team.teamId).replaceAll('"', '')===JSON.stringify(req.params.teamId).replaceAll('"', ''));
+      const gameIndex = user.teams.findIndex(team => JSON.stringify(team.teamId).replace(/"/g, '')===JSON.stringify(req.params.teamId).replace(/"/g, ''));
       userRights = gameRoleRights.get(user.teams[gameIndex].role)
     }else{
       userRights = roleRights.get(user.role);
