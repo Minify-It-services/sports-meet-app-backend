@@ -10,7 +10,6 @@ const createSport = {
     playerLimit: Joi.number().required(),
     extraLimit: Joi.number().required(),
     imageUrl: Joi.string().required(),
-    bgImageUrl: Joi.string().required(),
     rules: Joi.array().required(),
     coordinator: Joi.string().required(),
     viceCoordinator: Joi.string().required(),

@@ -41,7 +41,6 @@ const sportSchema = mongoose.Schema(
     },
     bgImageUrl: {
       type: String,
-      required: true,
       trim: true,
     },
     coordinator: {

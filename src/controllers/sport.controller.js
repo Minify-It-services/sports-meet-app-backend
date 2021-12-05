@@ -5,6 +5,7 @@ const { sportService } = require('../services');
 const { jsend } = require('../utils/jsend')
 
 const createSport = catchAsync(async (req, res) => {
+  console.log(req.body)
   const sport = await sportService.createSport(req.body);
   res.status(httpStatus.CREATED).send(jsend(sport));
 });
