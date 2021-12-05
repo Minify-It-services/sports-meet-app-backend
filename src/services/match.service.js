@@ -59,10 +59,22 @@ const deleteMatchById = async (matchId) => {
   return match;
 };
 
+const getMatchesForToday = async () => {
+  const matches = await Match.find({ date: { $lt: new Date() } });
+  return matches
+}
+
+const getMatchesBySport = async (sport) => {
+  const matches = await Match.find({ sport });
+  return matches
+}
+
 module.exports = {
   createMatch,
   getMatches,
   getMatchById,
   updateMatchById,
   deleteMatchById,
+  getMatchesForToday,
+  getMatchesBySport,
 };

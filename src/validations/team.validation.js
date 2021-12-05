@@ -15,6 +15,13 @@ const createTeam = {
   }),
 };
 
+const getTeams = {
+  params: Joi.object().keys({
+    sport: Joi.string(),
+    sportType: Joi.string(),
+  })
+}
+
 const singleTeam = {
   params: Joi.object().keys({
     teamId: Joi.required().custom(objectId),
@@ -47,4 +54,5 @@ module.exports = {
   singleTeam,
   updateTeam,
   teacherTeam,
+  getTeams,
 };

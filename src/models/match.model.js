@@ -8,13 +8,18 @@ const matchSchema = mongoose.Schema(
         required: true,
         trim: true,
     },
+    time: {
+        type: String,
+        required: true,
+        trim: true,
+    },
     team1: {
         type: {
-            team1Id: {
+            id: {
                 type: mongoose.SchemaTypes.ObjectId,
                 required: true,
             },
-            team1Name: {
+            name: {
                 type: String,
                 required: true,
                 trim: true,
@@ -23,11 +28,11 @@ const matchSchema = mongoose.Schema(
      },
      team2: {
         type: {
-            team2Id: {
+            id: {
                 type: mongoose.SchemaTypes.ObjectId,
                 required: true,
             },
-            team2Name: {
+            name: {
                 type: String,
                 required: true,
                 trim: true,
@@ -38,21 +43,24 @@ const matchSchema = mongoose.Schema(
         type: {
             team1Score: {
                 type: Number,
-                default: 0,
             },
             team2Score: {
                 type: Number,
-                default: 0,
             },
-        }
-     },
-     status:{
-        type: String,
-        enum: ['done', 'upcomming', 'today'],
-        default: 'upcomming',
+        },
+        default: {
+            team1Score: 0,
+            team2Score: 0,
+        },
      },
      sport: {
-         type: String,
+         type: {
+             name: String,
+             gameType: {
+                 type: String,
+                 enum: ['single', 'duo', 'team'],
+             },
+         },
      },
      resultId: {
         type: mongoose.SchemaTypes.ObjectId,

@@ -37,7 +37,7 @@ const updateSport = catchAsync(async (req, res) => {
 
 const deleteSport = catchAsync(async (req, res) => {
   await sportService.deleteSportById(req.params.sportId);
-  res.status(httpStatus.NO_CONTENT).send();
+  res.send(jsend({ message: 'Sport Deleted' }));
 });
 
 module.exports = {
