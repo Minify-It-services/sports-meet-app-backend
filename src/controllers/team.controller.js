@@ -41,8 +41,15 @@ const createTeam = catchAsync(async (req, res) => {
 });
 
 const getTeams = catchAsync(async (req, res) => {
-  const result = await teamService.getTeams();
-  res.send(jsend(result));
+  const { sport, sportType } = req.query
+
+  let result = {}
+  if(sport && sportType)
+    result = await Team.find({ $query: { sport : { name: sport, gameType: sportType } }, $orderby: { year: 1, name: 1 } })
+  else
+    result = await teamService.getTeams();
+  
+  res.status(httpStatus.OK).send(jsend(result));
 });
 
 const getTeam = catchAsync(async (req, res) => {
