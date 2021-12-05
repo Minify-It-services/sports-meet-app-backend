@@ -11,9 +11,15 @@ router
   .post(auth('manageMatch'), validate(matchValidation.createMatch), matchController.createMatch)
   .get( matchController.getMatches);
 router
+  .route('/today')
+  .get(matchController.getMatchesToday)
+router
   .route('/:matchId')
   .get(validate(matchValidation.getMatch), matchController.getMatch)
   .patch(auth('manageMatch'), validate(matchValidation.updateMatch), matchController.updateMatch)
   .delete(auth('manageMatch'), validate(matchValidation.deleteMatch), matchController.deleteMatch);
+router
+  .route('/fixture/:sport')
+  .get(matchController.getMatchesBySport)
 
 module.exports = router;
