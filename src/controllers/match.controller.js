@@ -29,8 +29,19 @@ const updateMatch = catchAsync(async (req, res) => {
 
 const deleteMatch = catchAsync(async (req, res) => {
   await matchService.deleteMatchById(req.params.matchId);
-  res.status(httpStatus.NO_CONTENT).send();
+  res.send(jsend({ message: 'Match Deleted' }));
 });
+
+const getMatchesToday = catchAsync(async (req, res) => {
+  const matches = await matchService.getMatchesForToday()
+  res.status(httpStatus.OK).send(jsend(matches))
+})
+
+const getMatchesBySport = catchAsync(async (req, res) => {
+  const { sport } = req.params
+  const matches = await matchService.getMatchesBySport(sport)
+  res.status(httpStatus.OK).send(jsend(matches))
+})
 
 module.exports = {
   createMatch,
@@ -38,4 +49,6 @@ module.exports = {
   getMatch,
   updateMatch,
   deleteMatch,
+  getMatchesToday,
+  getMatchesBySport,
 };
