@@ -21,6 +21,7 @@ const createSport = {
 const singleSport = {
   params: Joi.object().keys({
     sportId: Joi.string().custom(objectId),
+    sportName: Joi.string(),
   }),
 };
 

@@ -21,6 +21,7 @@ const getUsers = {
     userId: Joi.optional().custom(objectId),
     faculty: Joi.string(),
     sport: Joi.string(),
+    sportType: Joi.string(),
   }),
 };
 

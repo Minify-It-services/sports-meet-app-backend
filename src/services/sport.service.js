@@ -32,6 +32,10 @@ const getSportById = async (id) => {
   return Sport.findById(id);
 };
 
+const getSportByName = async (name) => {
+  return Sport.findOne({ name });
+}
+
 /**
  * Update Sport by id
  * @param {ObjectId} SportId
@@ -69,6 +73,7 @@ module.exports = {
   createSport,
   getSports,
   getSportById,
+  getSportByName,
   updateSportById,
   deleteSportById,
 };

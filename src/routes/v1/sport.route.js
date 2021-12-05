@@ -12,6 +12,10 @@ router
   .get(auth(), sportController.getSports);
 
 router
+  .route('/byName/:sportName')
+  .get(auth(), validate(sportValidation.singleSport), sportController.getSport)
+
+router
   .route('/:sportId')
   .get(auth(), validate(sportValidation.singleSport), sportController.getSport)
   .patch(auth('manageSport'), validate(sportValidation.updateSport), sportController.updateSport)

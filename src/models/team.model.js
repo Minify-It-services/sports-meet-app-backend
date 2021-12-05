@@ -28,8 +28,17 @@ const teamSchema = mongoose.Schema(
         trim: true,
     },
     sport: {
-        type: String,
-        required: true,
+        type: {
+            name: {
+                type: String,
+                required: true,
+            },
+            gameType: {
+                type: String,
+                enum: ['single', 'duo', 'team'],
+                required: true,
+            }
+        },
     },
     coach: {
         type: {

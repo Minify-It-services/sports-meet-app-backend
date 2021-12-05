@@ -11,7 +11,7 @@ const createTeam = {
     manager: Joi.optional().custom(objectId),
     captain: Joi.optional().custom(objectId),
     memberIds: Joi.array().required(),
-    sport: Joi.string().required(),
+    sport: Joi.object().required(),
   }),
 };
 

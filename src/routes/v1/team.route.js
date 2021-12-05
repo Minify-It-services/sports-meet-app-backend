@@ -22,7 +22,7 @@ router
 router
   .route('/leave/:teamId')
   .delete(auth('leaveTeam'), validate(teamValidation.singleTeam), teamController.deleteTeam)
-  .patch(auth('leaveTeam'), teamController.updateTeam)
+  .patch(auth('leaveTeam'), validate(teamValidation.updateTeam), teamController.updateTeam)
 
 router
   .route('/:teamId')

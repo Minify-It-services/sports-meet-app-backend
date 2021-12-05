@@ -13,23 +13,23 @@ const getUser = async (id) => {
 const addMembers = async (team) => {
     if(team.manager){
       const manager = await getUser(team.manager.id);
-      await manager.updateAddTeams(team._id, team.name, team.sport, 'manager')
+      await manager.updateAddTeams(team._id, team.name, team.sport.name, team.sport.gameType, 'manager')
       await manager.save()
     }
     if(team.coach){
       const coach = await getUser(team.coach.id);
-      await coach.updateAddTeams(team._id, team.name, team.sport, 'coach')
+      await coach.updateAddTeams(team._id, team.name, team.sport.name, team.sport.gameType, 'coach')
       await coach.save()
     }
     if(team.captain){
       const captain = await getUser(team.captain.id);
-      await captain.updateAddTeams(team._id, team.name, team.sport, 'captain')
+      await captain.updateAddTeams(team._id, team.name, team.sport.name, team.sport.gameType, 'captain')
       await captain.save()
     }
 
     await team.memberIds.forEach(async (memberId) => {
         const player = await getUser(memberId);
-        await player.updateAddTeams(team._id, team.name, team.sport, 'player')
+        await player.updateAddTeams(team._id, team.name, team.sport.name, team.sport.gameType, 'player')
         await player.save()
     })
 }
@@ -64,8 +64,8 @@ const deleteTeam = catchAsync(async (req, res) => {
 });
 
 const checkTeam = catchAsync(async (req, res) => {
-  const { sport, year, faculty, playerId } = req.query
-  const teams = await Team.find({ sport, year, faculty })
+  const { sport, year, sportType, faculty, playerId } = req.query
+  const teams = await Team.find({ sport: { name: sport, gameType: sportType }, year, faculty })
   const game = await Sport.findOne({ name: sport })
 
   let members = {}
@@ -100,11 +100,14 @@ const checkTeam = catchAsync(async (req, res) => {
 })
 
 const createTeacherTeam = catchAsync(async (req, res) =>{
-  const {name, sport, memberIds } = req.body
+  const {name, sportName, sportType, memberIds } = req.body
   const team = {
     name,
     memberIds,
-    sport,
+    sport: {
+      name: sportName,
+      type: sportType,
+    },
     year: '0',
     semester: '0th',
     faculty: 'staff',

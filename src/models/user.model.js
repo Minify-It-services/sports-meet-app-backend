@@ -48,7 +48,13 @@ const userSchema = mongoose.Schema(
           type: String,
         },
         sport: {
-          type: String,
+          type: {
+            name: String,
+            gameType: {
+              type: String,
+              enum: ['single', 'duo', 'team'],
+            },
+          },
         },
         role: {
           type: String,
@@ -123,12 +129,15 @@ userSchema.methods.getMinimumDetail = async function() {
   }
 }
 
-userSchema.methods.updateAddTeams = async function(teamId, teamName, sportName, role) {
+userSchema.methods.updateAddTeams = async function(teamId, teamName, sportName, sportType, role) {
   this.teams = [
     ...this.teams,
     {
       teamId,
-      sport: sportName,
+      sport: {
+        name: sportName,
+        gameType: sportType,
+      },
       teamName,
       role,
     }
