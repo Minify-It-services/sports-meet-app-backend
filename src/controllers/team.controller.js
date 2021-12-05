@@ -106,7 +106,7 @@ const createTeacherTeam = catchAsync(async (req, res) =>{
     memberIds,
     sport: {
       name: sportName,
-      type: sportType,
+      gameType: sportType,
     },
     year: '0',
     semester: '0th',
