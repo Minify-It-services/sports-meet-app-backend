@@ -110,6 +110,7 @@ const createTeacherTeam = catchAsync(async (req, res) =>{
     faculty: 'staff',
   }
   const createdTeam = await Team.create(team)
+  await addMembers(team)
   res.status(httpStatus.CREATED).send(jsend(createdTeam))
 })
 
