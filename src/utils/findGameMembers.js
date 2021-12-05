@@ -10,7 +10,7 @@ module.exports.findGameMembers = async (teams, game, playerId, alreadyTeam=false
             teamId = teams[i]._id
             for(let j=0; j<teams[i].memberIds.length; j++){
                 if(game.type === 'duo' && alreadyTeam){
-                    if(JSON.stringify(teams[i].memberIds[j]).replaceAll('"','') !== playerId){
+                    if(JSON.stringify(teams[i].memberIds[j]).replace(/"/g,'') !== playerId){
                         const member = await User.findById(teams[i].memberIds[j])
                         teamMembers.push(member)
                     }
