@@ -24,7 +24,7 @@ const createUser = async (userBody) => {
  * @param {number} [options.page] - Current page (default = 1)
  * @returns {Promise<QueryResult>}
  */
-const queryUsers = async (year, gender = ['male', 'female'], excludeUserId) => {
+const queryUsers = async (year, gender, excludeUserId) => {
   let users = []
   if(year === undefined){
     users = await User.find({year: {$ne: '0'}})

@@ -37,7 +37,9 @@ const getUsers = catchAsync(async (req, res) => {
       teamMembers.forEach(teamMember=>excludeUserId.push(teamMember))
     }
   }
-  const genderArr = [gender]
+  let genderArr = ['male', 'female']
+  if(gender)
+    genderArr = [gender]
 
   const result = await userService.queryUsers(year, genderArr, excludeUserId);
   res.send(jsend(result));
