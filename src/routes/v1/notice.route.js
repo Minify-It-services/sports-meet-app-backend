@@ -10,7 +10,9 @@ router
   .route('/')
   .post(auth('manageNotice'), validate(noticeValidation.createNotice), noticeController.createNotice)
   .get(noticeController.getNotices)
-
+router
+  .route('/today')
+  .get(noticeController.getTodayNotices)
 router
   .route('/:noticeId')
   .patch(auth('manageNotice'), validate(noticeValidation.updateNotice), noticeController.updateNotice)
