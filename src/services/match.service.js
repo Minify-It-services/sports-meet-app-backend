@@ -1,6 +1,9 @@
 const httpStatus = require('http-status');
 const { Match } = require('../models');
 const ApiError = require('../utils/ApiError');
+const moment = require('moment');
+
+const today = moment().startOf('day');
 
 /**
  * Create a Match
@@ -60,7 +63,10 @@ const deleteMatchById = async (matchId) => {
 };
 
 const getMatchesForToday = async () => {
-  const matches = await Match.find({ date: { $lt: new Date() } });
+  const matches = await Match.find({ date: { 
+    $gte: today.toDate(),
+    $lte: moment(today).endOf('day').toDate(),
+   } });
   return matches
 }
 
