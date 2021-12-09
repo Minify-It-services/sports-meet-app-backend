@@ -8,8 +8,6 @@ const createMatch = {
     team1: Joi.object().required(),
     team2: Joi.object().required(),
     sport: Joi.object().required(),
-    cards: Joi.array(),
-    scores: Joi.array(),
   }),
 };
 
