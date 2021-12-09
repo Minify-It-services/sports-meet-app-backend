@@ -107,16 +107,13 @@ const checkTeam = catchAsync(async (req, res) => {
 })
 
 const createTeacherTeam = catchAsync(async (req, res) =>{
-  const {name, sportName, sportType, memberIds } = req.body
+  const {name, sport, memberIds } = req.body
   const team = {
     name,
     memberIds,
-    sport: {
-      name: sportName,
-      gameType: sportType,
-    },
+    sport,
     year: '0',
-    semester: '0th',
+    semester: '0',
     faculty: 'staff',
   }
   const createdTeam = await Team.create(team)
