@@ -13,6 +13,7 @@ const createSport = {
     rules: Joi.array().required(),
     coordinators: Joi.array().required(),
     referees: Joi.array().required(), 
+    forGender: Joi.string().required(),
   }),
 };
 
@@ -20,6 +21,7 @@ const singleSport = {
   params: Joi.object().keys({
     sportId: Joi.string().custom(objectId),
     sportName: Joi.string(),
+    gender: Joi.string().validate('male', 'female', 'both'),
   }),
 };
 
@@ -40,6 +42,7 @@ const updateSport = {
         extraLimit: Joi.number(),
         coordinators: Joi.array(),
         referees: Joi.array(),
+        forGender: Joi.string(),
     })
 };
 

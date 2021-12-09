@@ -18,8 +18,8 @@ const createSport = async (sportBody) => {
  * Query for Sports
  * @returns {Promise<QueryResult>}
  */
-const getSports = async () => {
-  const sports = await Sport.find({});
+const getSports = async (gender) => {
+  const sports = await Sport.find({forGender:{$in: gender}});
   return sports;
 };
 

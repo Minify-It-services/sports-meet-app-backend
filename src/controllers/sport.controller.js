@@ -11,7 +11,12 @@ const createSport = catchAsync(async (req, res) => {
 });
 
 const getSports = catchAsync(async (req, res) => {
-  const result = await sportService.getSports();
+  const {gender} = req.query
+  let genderArray = ['male','female','both']
+  if(gender!==undefined){
+    genderArray = [gender,'both']
+  }
+  const result = await sportService.getSports(genderArray);
   res.send(jsend(result));
 });
 

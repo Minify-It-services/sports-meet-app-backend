@@ -14,6 +14,11 @@ const sportSchema = mongoose.Schema(
         enum: ['single', 'duo', 'team'],
         required: true,
      },
+     forGender: {
+       type: String,
+       enum: ['male','female','both'],
+       required: true,
+     },
     limit: {
         type: Number,
         required: true,
