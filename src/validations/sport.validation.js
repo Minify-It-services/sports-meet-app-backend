@@ -11,8 +11,7 @@ const createSport = {
     extraLimit: Joi.number().required(),
     imageUrl: Joi.string().required(),
     rules: Joi.array().required(),
-    coordinator: Joi.string().required(),
-    viceCoordinator: Joi.string().required(),
+    coordinators: Joi.array().required(),
     referees: Joi.array().required(), 
   }),
 };
@@ -39,9 +38,8 @@ const updateSport = {
         rules: Joi.array(),
         playerLimit: Joi.number(),
         extraLimit: Joi.number(),
-        coordinator: Joi.string(),
-        viceCoordinator: Joi.string(),
-        referees: Joi.array(), 
+        coordinators: Joi.array(),
+        referees: Joi.array(),
     })
 };
 

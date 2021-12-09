@@ -43,12 +43,8 @@ const sportSchema = mongoose.Schema(
       type: String,
       trim: true,
     },
-    coordinator: {
-      type: String,
-      required: true,
-    },
-    viceCoordinator: {
-      type: String,
+    coordinators: {
+      type: [String],
       required: true,
     },
     referees: {
