@@ -5,6 +5,7 @@ const createNotice = {
   body: Joi.object().keys({
     title: Joi.string().required(),
     description: Joi.string().required(),
+    label: Joi.string().valid('delayed', 'default winner', 'moved ahead', 'cancelled', 'important').required(),
   }),
 };
 
@@ -16,6 +17,7 @@ const updateNotice = {
     .keys({
         title: Joi.string().required(),
         description: Joi.string().required(),
+        label: Joi.string().valid('delayed', 'default winner', 'moved ahead', 'cancelled', 'important').required(),
     })
 };
 

@@ -13,6 +13,12 @@ const noticeSchema = mongoose.Schema(
       required: true,
       trim: true,
     },
+    label: {
+      type: String,
+      enum: ['delayed', 'default winner', 'moved ahead', 'cancelled', 'important'],
+      required: true,
+      trim: true,
+    }
   },
   {
     timestamps: true,
