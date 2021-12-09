@@ -44,7 +44,7 @@ const updateTeam = {
 const teacherTeam = {
   body: Joi.object().keys({
     name: Joi.string().required(),
-    sport: Joi.string().required(),
+    sport: Joi.object().required(),
     memberIds: Joi.array().required(),
   })
 }
