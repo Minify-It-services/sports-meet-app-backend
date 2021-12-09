@@ -9,7 +9,9 @@ const router = express.Router();
 router
   .route('/')
   .get(auth('getUsers'), validate(userValidation.getUsers), userController.getUsers);
-
+router
+  .route('/searchByName/:username')
+  .get(auth('getUsers'), userController.getUserInfo);
 router
   .route('/:userId')
   .get(auth('getUser'), validate(userValidation.getUser), userController.getUser)

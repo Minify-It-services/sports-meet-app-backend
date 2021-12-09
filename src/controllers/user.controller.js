@@ -4,7 +4,7 @@ const ApiError = require('../utils/ApiError');
 const catchAsync = require('../utils/catchAsync');
 const { userService } = require('../services');
 const { jsend } = require('../utils/jsend');
-const { Sport, Team } = require('../models');
+const { Sport, Team, User } = require('../models');
 const { findGameMembers, findGameMembersTeam } = require('../utils/findGameMembers');
 const logger = require('../config/logger')
 
@@ -63,10 +63,16 @@ const deleteUser = catchAsync(async (req, res) => {
   res.status(httpStatus.NO_CONTENT).send();
 });
 
+const getUserInfo = catchAsync(async (req, res) => {
+  const users = await User.find({name: new RegExp(`.*${req.params.username}.*`)})
+  res.status(httpStatus.OK).send(jsend(users))
+})
+
 module.exports = {
   createUser,
   getUsers,
   getUser,
   updateUser,
   deleteUser,
+  getUserInfo,
 };
