@@ -75,6 +75,11 @@ const getMatchesBySport = async (sport) => {
   return matches
 }
 
+const getResults = async () => {
+  const results = await Match.find({ status: 'completed' })
+  return results
+}
+
 module.exports = {
   createMatch,
   getMatches,
@@ -83,4 +88,5 @@ module.exports = {
   deleteMatchById,
   getMatchesForToday,
   getMatchesBySport,
+  getResults,
 };

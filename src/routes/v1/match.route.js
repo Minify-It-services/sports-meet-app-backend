@@ -14,6 +14,9 @@ router
   .route('/today')
   .get(matchController.getMatchesToday)
 router
+  .route('/result')
+  .get(matchController.getResults)
+router
   .route('/:matchId')
   .get(validate(matchValidation.getMatch), matchController.getMatch)
   .patch(auth('manageMatch'), validate(matchValidation.updateMatch), matchController.updateMatch)

@@ -30,6 +30,10 @@ const updateMatch = {
       resultId: Joi.custom(objectId).optional(),
       team1: Joi.object().optional(),
       team2: Joi.object().optional(),
+      score: Joi.object().optional(),
+      scores: Joi.array().optional(),
+      cards: Joi.array().optional(),
+      status: Joi.string().valid('uncompleted', 'completed').optional(),
     })
     .min(1),
 };

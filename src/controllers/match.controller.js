@@ -43,6 +43,11 @@ const getMatchesBySport = catchAsync(async (req, res) => {
   res.status(httpStatus.OK).send(jsend(matches))
 })
 
+const getResults = catchAsync(async (req, res) => {
+  const results = await matchService.getResults()
+  res.status(httpStatus.OK).send(jsend(results))
+})
+
 module.exports = {
   createMatch,
   getMatches,
@@ -51,4 +56,5 @@ module.exports = {
   deleteMatch,
   getMatchesToday,
   getMatchesBySport,
+  getResults,
 };

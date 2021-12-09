@@ -62,10 +62,19 @@ const matchSchema = mongoose.Schema(
              },
          },
      },
-     resultId: {
-        type: mongoose.SchemaTypes.ObjectId,
-        default: null,
-     }
+     status: {
+        type: String,
+        enum: ['uncompleted', 'completed'],
+        default: 'uncompleted',
+     },
+     cards: {
+         type: [String],
+         default: [],
+     },
+     scores: {
+         type: [String],
+         default: [],
+     },
   },
   {
     timestamps: true,
