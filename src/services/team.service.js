@@ -1,4 +1,5 @@
 const httpStatus = require('http-status');
+const mongoose = require('mongoose');
 const { Team, User } = require('../models');
 const ApiError = require('../utils/ApiError');
 const logger = require('../config/logger')
@@ -60,20 +61,23 @@ const getTeamById = async (id) => {
 };
 
 const updatePlayers = async (team, newTeam) => {
-  for(let i = 0; i < team.memberIds.length; i++){
-    if(!newTeam.memberIds.includes(team.memberIds[i])){
-      const oldMember = await getUser(team.memberIds[i])
+  const oldTeamMembers = team.memberIds.map(mId => mId.toString()).toObject();
+  const newTeamMembers = newTeam.memberIds.map(mId => mId.toString());
+
+  const commonMembers = oldTeamMembers.filter(memberId => newTeamMembers.indexOf(memberId)!=-1)
+  const idsToRemove = oldTeamMembers.filter(memberId => commonMembers.indexOf(memberId)===-1)
+  const idsToAdd = newTeamMembers.filter(memberId => commonMembers.indexOf(memberId)===-1)
+
+  for(let i = 0; i < idsToRemove.length; i++){
+      const oldMember = await getUser(mongoose.Types.ObjectId(idsToRemove[i]));
       await oldMember.updateRemoveTeams(team._id)
       await oldMember.save()
-    }
   }
   
-  for(let i = 0; i < newTeam.memberIds.length; i++){
-    if(!team.memberIds.includes(newTeam.memberIds[i])){
-      const newMember = await getUser(newTeam.memberIds[i])
-      await newMember.updateAddTeams(team._id, team.name, team.sport.name, team.sport.gameType, 'player')
-      await newMember.save()
-    }
+  for(let i = 0; i < idsToAdd.length; i++){
+    const newMember = await getUser(mongoose.Types.ObjectId(idsToAdd[i]));
+    await newMember.updateAddTeams(team._id, team.name, team.sport.name, team.sport.gameType, 'player')
+    await newMember.save()
   }
 }
 
