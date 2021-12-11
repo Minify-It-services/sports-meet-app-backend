@@ -30,7 +30,18 @@ const queryUsers = async (year, gender, excludeUserId) => {
     users = await User.find({year: {$ne: '0'}})
   }
   else{
-    users = await User.find({ year, gender: { $in: gender }, _id: {$nin: excludeUserId } });
+    let years = [year]
+    if(year === '2018' && gender[0] === 'female'){
+      years = [...years, '2019']
+    }
+    if(year === '2019' && gender[0] === 'female'){
+      years = [...years, '2018']
+    }
+    if(years.length === 2){
+      users = await User.find({ year: { $in: years }, gender: { $in: gender }, _id: {$nin: excludeUserId }, faculty: 'Software' });
+    }else{
+      users = await User.find({ year: { $in: years }, gender: { $in: gender }, _id: {$nin: excludeUserId } });
+    }
   }
   // logger.info(users)
   return users;
