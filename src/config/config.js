@@ -23,6 +23,8 @@ const envVarsSchema = Joi.object()
     SMTP_USERNAME: Joi.string().description('username for email server'),
     SMTP_PASSWORD: Joi.string().description('password for email server'),
     EMAIL_FROM: Joi.string().description('the from field in the emails sent by the app'),
+    ONE_SIGNAL_APP_ID: Joi.string().description('one signal app id'),
+    ONE_SIGNAL_API_KEY: Joi.string().description('one signal api key'),
   })
   .unknown();
 
@@ -60,5 +62,9 @@ module.exports = {
       },
     },
     from: envVars.EMAIL_FROM,
+  },
+  oneSignal: {
+    appId: envVars.ONE_SIGNAL_APP_ID,
+    apiKey: envVars.ONE_SIGNAL_API_KEY,
   },
 };

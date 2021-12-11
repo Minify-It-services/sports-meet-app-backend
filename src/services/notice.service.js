@@ -1,6 +1,10 @@
 const httpStatus = require('http-status');
 const { Notice } = require('../models');
+const config = require('../config/config');
 const ApiError = require('../utils/ApiError');
+const OneSignal = require('onesignal-node');
+
+const client = new OneSignal.Client(config.oneSignal.appId, config.oneSignal.apiKey);
 
 /**
  * Create a Notice
@@ -8,8 +12,22 @@ const ApiError = require('../utils/ApiError');
  * @returns {Promise<Sport>}
  */
 const createNotice = async (noticeBody) => {
-  return Notice.create(noticeBody);
-};
+  const notification = {
+    contents: {
+      'en': noticeBody.description,
+    },
+    included_segments: ['Subscribed Users'],
+    filters: [
+      { field: 'tag', key: 'level', relation: '>', value: 10 }
+    ]
+  };
+
+  client.createNotification(notification)
+    .then(response => {console.log(response);})
+    .catch(e => {console.log(e);});
+
+    return Notice.create(noticeBody);
+  };
 
 /**
  * Query for Notices
