@@ -7,7 +7,7 @@ router
   .route('/')
   .get(fixtureController.getFixtures);
 router
-  .route('/:sportName')
+  .route('/:sportName/:sportType')
   .get(fixtureController.getFixtureByName)
 
 module.exports = router;

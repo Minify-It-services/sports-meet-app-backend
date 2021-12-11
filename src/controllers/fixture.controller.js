@@ -20,12 +20,12 @@ const getFixtures = catchAsync(async (req, res) => {
 })
 
 const getFixtureByName = catchAsync(async (req, res) => {
-  const { sport, sportType } = req.params
+  const { sportName, sportType } = req.params
   const sportData = {
-    name: sport,
+    name: sportName,
     gameType: sportType,
   }
-  const currentSport = await Sport.find({ name: sport })
+  const currentSport = await Sport.find({ name: sportName })
   const todaysMatches = await Match.find({ sport: sportData, date: {
     $gte: today.toDate(),
     $lte: moment(today).endOf('day').toDate(),
