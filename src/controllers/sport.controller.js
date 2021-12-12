@@ -33,7 +33,7 @@ const getSport = catchAsync(async (req, res) => {
   if (!sport) {
     throw new ApiError(httpStatus.NOT_FOUND, 'sport not found');
   }
-  res.send(jsend(sport));
+  res.send(jsend({ sport, isRegisterTimeUp: false }));
 });
 
 const updateSport = catchAsync(async (req, res) => {

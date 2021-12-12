@@ -9,7 +9,7 @@ const router = express.Router();
 router
   .route('/')
   .post(auth('manageSport'), validate(sportValidation.createSport), sportController.createSport)
-  .get(auth(), sportController.getSports);
+  .get(sportController.getSports);
 
 router
   .route('/byName/:sportName')
