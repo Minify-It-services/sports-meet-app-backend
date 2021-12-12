@@ -57,7 +57,19 @@ const getTeam = catchAsync(async (req, res) => {
   if (!team) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Team not found');
   }
-  res.send(jsend(team));
+
+  let teamToSend = team
+  let members = []
+  for(let i = 0; i < team.memberIds.length; i++) {
+    const member = await getUser(team.memberIds[i])
+    const memberDetail = await member.getMinimumDetail()
+    members = [...members, memberDetail]
+  }
+  teamToSend = {
+    ...teamToSend,  
+    members
+  }
+  res.send(jsend(teamToSend));
 });
 
 const updateTeam = catchAsync(async (req, res) => {
