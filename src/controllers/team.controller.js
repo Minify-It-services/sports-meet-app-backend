@@ -110,7 +110,7 @@ const checkTeam = catchAsync(async (req, res) => {
     res.send(jsend({ message: 'Already in a team', teamId, teamMembers, manager, captain, coach, role }))
     return
   }
-  if(game.classLimit!==-1 && teams.length >= game.classLimit){
+  if(game.classLimit!==-1 && teams.length === game.classLimit){
     res.send(jsend({ message: 'Team full' }))
     return
   }
