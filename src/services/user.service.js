@@ -24,23 +24,23 @@ const createUser = async (userBody) => {
  * @param {number} [options.page] - Current page (default = 1)
  * @returns {Promise<QueryResult>}
  */
-const queryUsers = async (year, gender, excludeUserId) => {
+const queryUsers = async (year, gender, excludeUserId, faculty) => {
   let users = []
   if(year === undefined){
     users = await User.find({year: {$ne: '0'}})
   }
   else{
     let years = [year]
-    if(year === '2018' && gender[0] === 'female'){
+    if(year === '2018' && gender[0] === 'female' && faculty === 'Software'){
       years = [...years, '2019']
     }
-    if(year === '2019' && gender[0] === 'female'){
+    if(year === '2019' && gender[0] === 'female' && faculty === 'Software'){
       years = [...years, '2018']
     }
     if(years.length === 2){
       users = await User.find({ year: { $in: years }, gender: { $in: gender }, _id: {$nin: excludeUserId }, faculty: 'Software' });
     }else{
-      users = await User.find({ year: { $in: years }, gender: { $in: gender }, _id: {$nin: excludeUserId } });
+      users = await User.find({ year: { $in: years }, gender: { $in: gender }, _id: {$nin: excludeUserId }, faculty });
     }
   }
   // logger.info(users)

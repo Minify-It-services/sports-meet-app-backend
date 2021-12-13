@@ -41,7 +41,7 @@ const getUsers = catchAsync(async (req, res) => {
   if(gender)
     genderArr = [gender]
 
-  const result = await userService.queryUsers(year, genderArr, excludeUserId);
+  const result = await userService.queryUsers(year, genderArr, excludeUserId, faculty);
   res.send(jsend(result));
 });
 
