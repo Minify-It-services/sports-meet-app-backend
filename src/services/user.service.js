@@ -40,7 +40,10 @@ const queryUsers = async (year, gender, excludeUserId, faculty) => {
     if(years.length === 2){
       users = await User.find({ year: { $in: years }, gender: { $in: gender }, _id: {$nin: excludeUserId }, faculty: 'Software' });
     }else{
-      users = await User.find({ year: { $in: years }, gender: { $in: gender }, _id: {$nin: excludeUserId }, faculty });
+      if(faculty === undefined)
+        users = await User.find({ year: { $in: years }, gender: { $in: gender }, _id: {$nin: excludeUserId } });
+      else
+        users = await User.find({ year: { $in: years }, gender: { $in: gender }, _id: {$nin: excludeUserId }, faculty });
     }
   }
   // logger.info(users)
