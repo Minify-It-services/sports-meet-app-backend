@@ -98,21 +98,21 @@ const updateTeamById = async (teamId, updateBody) => {
     updateBody.captain = await Captain.getMinimumDetail()
     await Captain.updateAddTeams(team._id, team.name, team.sport.name, team.sport.gameType, 'captain')
     await Captain.save()
+
+    const OldCaptain = await getUser(team.captain.id)
+    await OldCaptain.updateRemoveTeams(team._id)
+    await OldCaptain.save()
   }
-  if(updateBody.coach ){
+  if(updateBody.coach){
     const Coach = await getUser(updateBody.coach)
     updateBody.coach = await Coach.getMinimumDetail()
     await Coach.updateAddTeams(team._id, team.name, team.sport.name, team.sport.gameType, 'coach')
     await Coach.save()
+
+    const OldCoach = await getUser(team.coach.id)
+    await OldCoach.updateRemoveTeams(team._id)
+    await OldCoach.save()
   }
-
-  const OldCaptain = await getUser(team.captain.id)
-  await OldCaptain.updateRemoveTeams(team._id)
-  await OldCaptain.save()
-
-  const OldCoach = await getUser(team.coach.id)
-  await OldCoach.updateRemoveTeams(team._id)
-  await OldCoach.save()
 
   await updatePlayers(team, updateBody)
   Object.assign(team, updateBody);
