@@ -6,6 +6,7 @@ const noticeRoute = require('./notice.route');
 const matchRoute = require('./match.route');
 const teamRoute = require('./team.route')
 const fixtureRoute = require('./fixture.route')
+const tieSheetRoute = require('./tiesheet.route')
 const adminRoute = require('./admin.route')
 const docsRoute = require('./docs.route');
 const config = require('../../config/config');
@@ -45,6 +46,10 @@ const defaultRoutes = [
     path: '/fixtures',
     route: fixtureRoute,
   },
+  {
+    path: '/tieSheets',
+    route: tieSheetRoute,
+  }
 ];
 
 const devRoutes = [
