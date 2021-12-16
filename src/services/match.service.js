@@ -19,7 +19,7 @@ const createMatch = async (matchBody) => {
  * @returns {Promise<QueryResult>}
  */
 const getMatches = async () => {
-  const matches = await Match.find({});
+  const matches = await Match.find({}).sort({ createdAt: -1 });
   return matches;
 };
 
