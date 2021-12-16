@@ -63,9 +63,10 @@ const deleteMatchById = async (matchId) => {
 };
 
 const getMatchesForToday = async () => {
+  console.log(today.toDate(), moment(today).endOf('day').toDate());
   const matches = await Match.find({ date: { 
     $gte: today.toDate(),
-    $lte: moment(today).endOf('day').toDate(),
+    $lte: moment(today).endOf('day').toDate().add(4, 'hours'),
    } });
   return matches
 }
