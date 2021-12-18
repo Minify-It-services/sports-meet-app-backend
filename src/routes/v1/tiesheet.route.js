@@ -7,5 +7,8 @@ router
   .route('/')
   .post(tieSheetController.addTieSheet)
   .get(tieSheetController.getTieSheets);
+router
+  .route('/league')
+  .get(tieSheetController.getLeagues);
 
 module.exports = router;

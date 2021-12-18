@@ -16,7 +16,14 @@ const getTieSheets = catchAsync(async (req, res) => {
     res.status(httpStatus.OK).send(jsend(ts))
 })
 
+const getLeagues = catchAsync(async (req, res) => {
+    const lt = await TieSheet.find({ name: 'only league' })
+
+    res.status(httpStatus.OK).send(jsend(lt))
+})
+
 module.exports = {
     getTieSheets,
     addTieSheet,
+    getLeagues,
 };
